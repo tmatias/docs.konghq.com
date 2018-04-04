@@ -10,6 +10,8 @@ class: page-install-method
   
     The Admin GUI configuration settings in `kong.conf` to enable SSL.
 
+> Note: starting from Kong 0.32, Admin GUI listen directives follow [the new format](https://getkong.org/docs/0.13.x/configuration/#admin_listen) for Kong listen directives. Make sure `admin_gui_listen` is adapted accordingly.
+
 2. **Navigate**
   
     Go to your configured Admin GUI `ip:port` using the https:// protocol.

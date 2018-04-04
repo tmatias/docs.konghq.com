@@ -16,6 +16,7 @@ title: Getting Started with the Kong Developer Portal
 3. Restart Kong (`kong restart`)
 
 > Note: Not all deployments of Kong utilize a configuration file, if this describes you (or you are unsure) please reference the [Kong configuration docs](https://getkong.org/docs/0.12.x/configuration/) in order to implement this step.
+> Note: Starting from Kong 0.32, Dev Portal listen directives follow [the new format](https://getkong.org/docs/0.13.x/configuration/#admin_listen) for Kong listen directives. Make sure `portal_gui_listen` and `portal_api_listen` are adapted accordingly.
 
 ## Uploading the Example Dev Portal files
 
