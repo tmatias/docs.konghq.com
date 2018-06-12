@@ -1,0 +1,203 @@
+---
+title: Lua Reference - kong.sdk.service
+layout: default
+---
+
+
+<header class="page-header">
+  <div class="container">
+    <div class="page-header-icon">
+      <img src="/assets/images/icons/icn-documentation.svg" alt="Documentation" />
+    </div>
+    <div class="page-header-title">
+      <h1>Public Lua API Reference</h1>
+      <p>For plugins developers and core contributors</p>
+    </div>
+    {% if site.data.kong_versions.size > 1 %}
+      <div class="dropdown page-header-right">
+        <button class="page-header-btn" id="version-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Version {{page.kong_version}}
+          {% if page.kong_version == site.data.kong_latest.release %}<em>(latest)</em>{% endif %}
+          <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="version-dropdown">
+          {% for ver in site.data.kong_versions %}
+            {% if page.kong_version != ver.release %}
+              <li>
+                {% if ver.lua_doc %}
+                  <a href="/docs/{{ver.release}}/lua-reference/"{% if ver.release == page.kong_version %} class="active"{% endif %}>
+                    {{ver.release}}
+                    {% if ver.release == site.data.kong_latest.release %}(latest){% endif %}
+                  </a>
+                {% else %}
+                  <span>Not available for {{ver.release}}</span>
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</header>
+
+<div class="container">
+  <aside class="page-navigation">
+    <nav>
+      <ul>
+        <li>
+          <a href="/docs/{{page.kong_version}}"><h5>Back to docs</h5></a>
+        </li>
+        <li>
+          <a href="/docs/{{page.kong_version}}/lua-reference/"><h5>Index</h5></a>
+        </li>
+        <li>
+          <h5>Modules</h5>
+          <ul>
+            <li><a href="../../modules/kong.dao">kong.dao</a></li>
+            <li><a href="../../modules/kong.db.schema.metaschema">kong.db.schema.metaschema</a></li>
+            <li><a href="../../modules/kong.db.schema.typedefs">kong.db.schema.typedefs</a></li>
+            <li><a href="../../modules/kong.plugins.basic-auth.crypto">kong.plugins.basic-auth.crypto</a></li>
+            <li><a href="../../modules/kong.plugins.galileo.alf">kong.plugins.galileo.alf</a></li>
+            <li><a href="../../modules/kong.plugins.galileo.buffer">kong.plugins.galileo.buffer</a></li>
+            <li><a href="../../modules/kong.plugins.jwt.jwt_parser">kong.plugins.jwt.jwt_parser</a></li>
+            <li><a href="../../modules/kong.sdk">kong.sdk</a></li>
+            <li>kong.sdk.service</li>
+            <li><a href="../../modules/kong.sdk.service.request">kong.sdk.service.request</a></li>
+            <li><a href="../../modules/kong.sdk.service.response">kong.sdk.service.response</a></li>
+            <li><a href="../../modules/kong.tools.responses">kong.tools.responses</a></li>
+            <li><a href="../../modules/kong.tools.timestamp">kong.tools.timestamp</a></li>
+            <li><a href="../../modules/kong.tools.utils">kong.tools.utils</a></li>
+            <li><a href="../../modules/spec.helpers">spec.helpers</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="page-content-container">
+  <div class="page-content">
+    <div class="content">
+<h1><code>kong.sdk.service</code></h1>
+<p>Namespace for the communication with the upstream Service</p>
+<p></p>
+
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+  <tr>
+    <td class="name"><a href="#kong.sdk.service.set_upstream">kong.sdk.service.set_upstream (host)</a></td>
+    <td class="summary"></td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_target">set_target (host, port)</a></td>
+    <td class="summary">Sets the target host and port for the service to which Kong will
+ proxy the request.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#was_proxied">was_proxied ()</a></td>
+    <td class="summary">Determine if the request was proxied by to a service
+ or if the response was produced by Kong itself.</td>
+  </tr>
+</table>
+
+
+<h2 class="section-header "><a name="Functions">Functions</a></h2>
+
+
+<dl class="function">
+  <hr />
+  <dt>
+    <h4><a name="kong.sdk.service.set_upstream">kong.sdk.service.set_upstream</a></h4>
+  </dt>
+  <dd>
+    Sets the Upstream object to be used by the service to which
+ Kong will proxy the request.
+ The <code>Host</code> header is not set: use
+ <code>kong.service.request.set_header</code> to set the header.</p>
+
+<p> upstream name is invalid; throws an error on malformed inputs.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">host</code>
+          Host name to set. Example: "example.com"
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        <code>true</code> on success, <code>nil</code> and an error message if the
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_target">set_target</a></h4>
+  </dt>
+  <dd>
+    Sets the target host and port for the service to which Kong will
+ proxy the request.  The <code>Host</code> header is not set: use
+ <code>kong.service.request.set_header</code> to set the header.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">host</code>
+          Host name to set. Example: "example.com"
+        </li>
+        <li>
+          <code class="parameter">port</code>
+          A port number between 0 and 65535.
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on malformed inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="was_proxied">was_proxied</a></h4>
+  </dt>
+  <dd>
+    Determine if the request was proxied by to a service
+ or if the response was produced by Kong itself.
+
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        true if the request was proxied by Kong;
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+</dl>
+
+
+    </div>
+  </div>
+</div>
+</div>

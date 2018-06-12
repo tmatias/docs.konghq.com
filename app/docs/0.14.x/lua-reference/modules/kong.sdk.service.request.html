@@ -1,0 +1,537 @@
+---
+title: Lua Reference - kong.sdk.service.request
+layout: default
+---
+
+
+<header class="page-header">
+  <div class="container">
+    <div class="page-header-icon">
+      <img src="/assets/images/icons/icn-documentation.svg" alt="Documentation" />
+    </div>
+    <div class="page-header-title">
+      <h1>Public Lua API Reference</h1>
+      <p>For plugins developers and core contributors</p>
+    </div>
+    {% if site.data.kong_versions.size > 1 %}
+      <div class="dropdown page-header-right">
+        <button class="page-header-btn" id="version-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Version {{page.kong_version}}
+          {% if page.kong_version == site.data.kong_latest.release %}<em>(latest)</em>{% endif %}
+          <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="version-dropdown">
+          {% for ver in site.data.kong_versions %}
+            {% if page.kong_version != ver.release %}
+              <li>
+                {% if ver.lua_doc %}
+                  <a href="/docs/{{ver.release}}/lua-reference/"{% if ver.release == page.kong_version %} class="active"{% endif %}>
+                    {{ver.release}}
+                    {% if ver.release == site.data.kong_latest.release %}(latest){% endif %}
+                  </a>
+                {% else %}
+                  <span>Not available for {{ver.release}}</span>
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</header>
+
+<div class="container">
+  <aside class="page-navigation">
+    <nav>
+      <ul>
+        <li>
+          <a href="/docs/{{page.kong_version}}"><h5>Back to docs</h5></a>
+        </li>
+        <li>
+          <a href="/docs/{{page.kong_version}}/lua-reference/"><h5>Index</h5></a>
+        </li>
+        <li>
+          <h5>Modules</h5>
+          <ul>
+            <li><a href="../../modules/kong.dao">kong.dao</a></li>
+            <li><a href="../../modules/kong.db.schema.metaschema">kong.db.schema.metaschema</a></li>
+            <li><a href="../../modules/kong.db.schema.typedefs">kong.db.schema.typedefs</a></li>
+            <li><a href="../../modules/kong.plugins.basic-auth.crypto">kong.plugins.basic-auth.crypto</a></li>
+            <li><a href="../../modules/kong.plugins.galileo.alf">kong.plugins.galileo.alf</a></li>
+            <li><a href="../../modules/kong.plugins.galileo.buffer">kong.plugins.galileo.buffer</a></li>
+            <li><a href="../../modules/kong.plugins.jwt.jwt_parser">kong.plugins.jwt.jwt_parser</a></li>
+            <li><a href="../../modules/kong.sdk">kong.sdk</a></li>
+            <li><a href="../../modules/kong.sdk.service">kong.sdk.service</a></li>
+            <li>kong.sdk.service.request</li>
+            <li><a href="../../modules/kong.sdk.service.response">kong.sdk.service.response</a></li>
+            <li><a href="../../modules/kong.tools.responses">kong.tools.responses</a></li>
+            <li><a href="../../modules/kong.tools.timestamp">kong.tools.timestamp</a></li>
+            <li><a href="../../modules/kong.tools.utils">kong.tools.utils</a></li>
+            <li><a href="../../modules/spec.helpers">spec.helpers</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="page-content-container">
+  <div class="page-content">
+    <div class="content">
+<h1><code>kong.sdk.service.request</code></h1>
+<p></p>
+<p></p>
+
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+  <tr>
+    <td class="name"><a href="#add_header">add_header (header, value)</a></td>
+    <td class="summary">Adds a header with the given value to the request to the service,
+ without removing any existing headers with the same name.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#clear_header">clear_header (header)</a></td>
+    <td class="summary">Removes any occurrences of the given header.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_body">set_body (args, mime)</a></td>
+    <td class="summary">Sets the body for the request to the service, encoding it based on the
+ <code>mimetype</code> argument (or the <code>Content-Type</code> header of the request
+ if the <code>mimetype</code> argument is not given).</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_header">set_header (header, value)</a></td>
+    <td class="summary">Sets a request header to the given value.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_headers">set_headers (headers)</a></td>
+    <td class="summary">Sets multiple headers at once.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_method">set_method (method)</a></td>
+    <td class="summary">Sets the HTTP method for the request that Kong will make to
+ the service.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_path">set_path (path)</a></td>
+    <td class="summary">Sets the path component for the request to the service.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_query">set_query (args)</a></td>
+    <td class="summary">Defines a query string for the request to the service, given a table of
+ arguments.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_raw_body">set_raw_body (body)</a></td>
+    <td class="summary">Sets the raw body for the request to the service.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_raw_query">set_raw_query (query)</a></td>
+    <td class="summary">Sets the querystring for the request to the service.</td>
+  </tr>
+  <tr>
+    <td class="name"><a href="#set_scheme">set_scheme (scheme)</a></td>
+    <td class="summary">Sets the protocol to use when proxying the request to the service.</td>
+  </tr>
+</table>
+
+
+<h2 class="section-header "><a name="Functions">Functions</a></h2>
+
+
+<dl class="function">
+  <hr />
+  <dt>
+    <h4><a name="add_header">add_header</a></h4>
+  </dt>
+  <dd>
+    Adds a header with the given value to the request to the service,
+ without removing any existing headers with the same name.  The order in
+ which headers are added is retained.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">header</code>
+          The header name. Example: "Cache-Control"
+        </li>
+        <li>
+          <code class="parameter">value</code>
+          The header value. Example: "no-cache"
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="clear_header">clear_header</a></h4>
+  </dt>
+  <dd>
+    Removes any occurrences of the given header.
+ The function does not throw an error if no header was removed.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">header</code>
+          The header name. Example: "X-Foo"
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_body">set_body</a></h4>
+  </dt>
+  <dd>
+    Sets the body for the request to the service, encoding it based on the
+ <code>mimetype</code> argument (or the <code>Content-Type</code> header of the request
+ if the <code>mimetype</code> argument is not given). </p>
+
+<ul>
+    <li>if the request content type is <code>application/x-www-form-urlencoded</code>:</li>
+    <li>encodes the form arguments: keys are produced in lexicographical
+     order. The order of entries within the same key (when values are
+     given as an array) is retained.
+     Any string values given are URL-encoded.</li>
+    <li>if the request content type is <code>multipart/form-data</code>:</li>
+    <li>encodes the multipart form data</li>
+    <li>if the request content type is <code>application/json</code>:</li>
+    <li>encodes the request as JSON
+     (same as <code>kong.service.request.set_raw_body(json.encode(args))</code>)</li>
+    <li>JSON types are converted to matching Lua types</li>
+    <li>If none of the above, it returns <code>nil</code> and an error message.</li>
+</ul>
+
+<p> If further control of the body generation is needed, a raw body
+ can be given as a string with <code>kong.service.request.set_raw_body</code>.</p>
+
+<p> value returned by <code>kong.service.request.get_body</code>.
+ The <code>Content-Type</code> header will be updated to match the appropriate type.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">args</code>
+          a table with data to be converted to the appropriate format
+ and stored in the body.
+ * If the request content type is <code>application/x-www-form-urlencoded</code>:
+   * input should be a table where each key is a string (corresponding</p>
+<pre><code> to an argument name), and each value is either a boolean,
+ a string or an array of strings or booleans.
+</code></pre>
+<p> * If the request content type is <code>application/json</code>:
+   * the table should be JSON-encodable (all tables should be either</p>
+<pre><code> Lua sequences or all keys should be strings).
+</code></pre>
+<p> * if the request content type is <code>multipart/form-data</code>:
+   * the table should be multipart-encodable.
+        </li>
+        <li>
+          <code class="parameter">mime</code>
+          if given, it should be in the same format as the
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_header">set_header</a></h4>
+  </dt>
+  <dd>
+    Sets a request header to the given value.  It overrides any existing ones:
+ if one or more headers are already set with header name, they are removed.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">header</code>
+          The header name. Example: "X-Foo"
+        </li>
+        <li>
+          <code class="parameter">value</code>
+          The header value. Example: "hello world"
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_headers">set_headers</a></h4>
+  </dt>
+  <dd>
+    Sets multiple headers at once. </p>
+
+<p> Headers are produced in lexicographical order. The order of entries within
+ the same header (when values are given as an array) is retained.</p>
+
+<p> It overrides any existing headers for the given keys: if one or more
+ headers are already set with a header name, they are removed. Headers that
+ are not referenced as keys of the <code>headers</code> table remain untouched.</p>
+
+<p> If further control on the order of headers is needed, these should be
+ added one by one using <code>kong.service.request.set_header</code> and
+ <code>kong.service.request.add_header</code>.</p>
+
+<p> and each value is either a string or an array of strings.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">headers</code>
+          A table where each key is a string containing a header name
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_method">set_method</a></h4>
+  </dt>
+  <dd>
+    Sets the HTTP method for the request that Kong will make to
+ the service.
+ uppercase. Supported values are: <code>&quot;GET&quot;</code>, <code>&quot;HEAD&quot;</code>, <code>&quot;PUT&quot;</code>, <code>&quot;POST&quot;</code>,
+ <code>&quot;DELETE&quot;</code>, <code>&quot;OPTIONS&quot;</code>, <code>&quot;MKCOL&quot;</code>, <code>&quot;COPY&quot;</code>, <code>&quot;MOVE&quot;</code>, <code>&quot;PROPFIND&quot;</code>,
+ <code>&quot;PROPPATCH&quot;</code>, <code>&quot;LOCK&quot;</code>, <code>&quot;UNLOCK&quot;</code>, <code>&quot;PATCH&quot;</code>, <code>&quot;TRACE&quot;</code>.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">method</code>
+          The method string, which should be given in all
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_path">set_path</a></h4>
+  </dt>
+  <dd>
+    Sets the path component for the request to the service.  It is not
+ normalized in any way and should not include the querystring.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">path</code>
+          The path string. Example: "/v2/movies"
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_query">set_query</a></h4>
+  </dt>
+  <dd>
+    Defines a query string for the request to the service, given a table of
+ arguments. </p>
+
+<p> Keys are produced in lexicographical order. The order of entries within the
+ same key (when values are given as an array) is retained.</p>
+
+<p> If further control of the querystring generation is needed, a raw
+ querystring can be given as a string with <code>kong.service.request.set_query</code>.</p>
+
+<p> argument name), and each value is either a boolean, a string or an array of
+ strings or booleans. Any string values given are URL-encoded.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">args</code>
+          A table where each key is a string (corresponding to an
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_raw_body">set_raw_body</a></h4>
+  </dt>
+  <dd>
+    Sets the raw body for the request to the service.  Input argument is a
+ raw string that is not processed in any way. Sets the <code>Content-Length</code>
+ header appropriately. To set an empty body, use an empty string (<code>&quot;&quot;</code>).</p>
+
+<p> For a higher-level function for setting the body based on the request
+ content type, see <code>kong.service.request.set_body</code>.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">body</code>
+          The raw body, as a string.
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_raw_query">set_raw_query</a></h4>
+  </dt>
+  <dd>
+    Sets the querystring for the request to the service.  Input argument is a
+ raw string that is not processed in any way.</p>
+
+<p> For a higher-level function for setting the query string from a Lua table
+ of arguments, see <code>kong.service.request.set_query_args</code>.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">query</code>
+          The raw querystring. Example: "foo=bar&amp;bla&amp;baz=hello%20world"
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+  <hr />
+  <dt>
+    <h4><a name="set_scheme">set_scheme</a></h4>
+  </dt>
+  <dd>
+    Sets the protocol to use when proxying the request to the service.
+
+    <h5>Parameters:</h5>
+    <ul>
+        <li>
+          <code class="parameter">scheme</code>
+          Protocol to use. Supported values are <code>&quot;http&quot;</code> and <code>&quot;https&quot;</code>.
+        </li>
+    </ul>
+
+    <h5>Returns:</h5>
+    <ul>
+      <li>
+        Nothing; throws an error on invalid inputs.
+      </li>
+    </ul>
+
+
+
+
+
+  </dd>
+</dl>
+
+
+    </div>
+  </div>
+</div>
+</div>
